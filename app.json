@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "frontendCaseRN",
-    "slug": "frontendCaseRN",
+    "slug": "frontend-assignemnt",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -31,6 +31,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "00de29ca-5f3a-4117-aba4-8933809bb7d4"
+      }
+    },
+    "owner": "gokhanzorgul"
   }
 }
