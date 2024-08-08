@@ -11,3 +11,5 @@ export const window: ScaledSize = isWeb
     width: 700,
   }
   : Dimensions.get("window");
+
+  export const PAGE_LODASH_DELAY = 250;

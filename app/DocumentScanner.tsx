@@ -1,34 +1,38 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+
 import { i18n } from '@/locales/i18n';
+import { CustomButton } from '@/components/CustomButton';
 import { PageTitle } from '@/components/PageTitle';
 import { PageTag } from '@/components/PageTag';
 import { PageDescription } from '@/components/PageDescription';
-import { CustomButton } from '@/components/CustomButton';
+import { WScale, HScale } from '@/utils/layout';
 
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-
+const IMAGE_HEIGHT = HScale(466);
 
 export const DocumentScanner = () => {
 
-  const bottom = useSharedValue<number>(0);
+  const bottom = useSharedValue<number>(-IMAGE_HEIGHT);
 
   useEffect(() => {
     setTimeout(() => {
-      bottom.value = withSpring(bottom.value + 150);
+      bottom.value = withSpring(bottom.value + IMAGE_HEIGHT - HScale(60));
     }, 1000)
   }, [])
 
   return (
-    <View style={{ flexGrow: 1, height: "100%", paddingHorizontal: 24, borderWidth: 1, alignItems: "center" }}>
-      <PageTag text={i18n.t("pages.documentScanner.tag")} />
-      <PageTitle text={i18n.t("pages.documentScanner.title")} />
-      <PageDescription text={i18n.t("pages.documentScanner.description")} />
-      <CustomButton style={{ marginTop: 40 }} />
+    <View style={styles.container}>
+      <View style={styles.contentContainer}>
+        <PageTag text={i18n.t("pages.documentScanner.tag")} />
+        <PageTitle text={i18n.t("pages.documentScanner.title")} />
+        <PageDescription text={i18n.t("pages.documentScanner.description")} />
+        <CustomButton style={{ marginTop: HScale(20) }} onPress={() => null} />
+      </View>
 
-      <View style={styles.container}>
+      <View style={styles.animationContainer}>
         <Animated.Image
-          source={require("@/assets/images/document-scanner-phone.png")}
+          source={require("@/assets/images/documentScanner/phone.png")}
           style={{ ...styles.image, bottom }}>
         </Animated.Image>
       </View>
@@ -39,13 +43,20 @@ export const DocumentScanner = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%"
+    alignItems: "center"
+  },
+  contentContainer: {
+    paddingHorizontal: WScale(24),
+    alignItems: "center"
+  },
+  animationContainer: {
+    flex: 1,
+    alignItems: "center"
   },
   image: {
-    height: 352,
-    width: "100%",
+    width: WScale(230),
+    height: IMAGE_HEIGHT,
     position: "absolute",
-    objectFit:"scale-down"
+    objectFit: "contain"
   }
 });

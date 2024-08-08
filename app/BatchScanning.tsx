@@ -1,14 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
 import { i18n } from '@/locales/i18n';
 import { PageTitle } from '@/components/PageTitle';
 import { PageTag } from '@/components/PageTag';
 import { PageDescription } from '@/components/PageDescription';
 import { CustomButton } from '@/components/CustomButton';
 import Animated, { useSharedValue, withSpring, withDelay } from 'react-native-reanimated';
+import { HScale, WScale } from '@/utils/layout';
 
 const DELAY = 1500;
-const START_VALUE = -200;
+const IMAGE_HEIGHT = HScale(466);
+const START_VALUE = -IMAGE_HEIGHT;
+
 
 export const BatchScanning = () => {
   const bottom = useSharedValue<number>(START_VALUE);
@@ -17,10 +20,10 @@ export const BatchScanning = () => {
   const pageThreeAnimation = useSharedValue<number>(START_VALUE);
 
   useEffect(() => {
-    bottom.value = withDelay(DELAY / 2, withSpring(bottom.value + 350));
-    pageOneAnimation.value = withDelay(DELAY, withSpring(pageOneAnimation.value + 320));
-    pageTwoAnimation.value = withDelay(DELAY + 500, withSpring(pageTwoAnimation.value + 300));
-    pageThreeAnimation.value = withDelay(DELAY + 1000, withSpring(pageThreeAnimation.value + 280));
+    bottom.value = withDelay(DELAY / 2, withSpring(bottom.value + IMAGE_HEIGHT - HScale(80)));
+    pageOneAnimation.value = withDelay(DELAY, withSpring(pageOneAnimation.value + HScale(420)));
+    pageTwoAnimation.value = withDelay(DELAY + 500, withSpring(pageTwoAnimation.value + HScale(410)));
+    pageThreeAnimation.value = withDelay(DELAY + 1000, withSpring(pageThreeAnimation.value + HScale(400)));
   }, [])
 
   return (
@@ -28,7 +31,7 @@ export const BatchScanning = () => {
       <PageTag text={i18n.t("pages.batchScanning.tag")} />
       <PageTitle text={i18n.t("pages.batchScanning.title")} />
       <PageDescription text={i18n.t("pages.batchScanning.description")} />
-      <CustomButton style={{ marginTop: 40 }} />
+      <CustomButton style={{ marginTop: HScale(20) }} onPress={() => null} />
 
       <View style={styles.animatedContainer}>
         <Animated.Image
@@ -36,20 +39,20 @@ export const BatchScanning = () => {
           style={{ ...styles.image, bottom }}>
         </Animated.Image>
 
-        <Animated.Image
+         <Animated.Image
           source={require("@/assets/images/batchScanning/page-three.png")}
-          style={{ ...styles.page, bottom: pageOneAnimation, height: 310 }}>
-        </Animated.Image>
+          style={{ ...styles.page, bottom: pageOneAnimation, height: HScale(330),width: WScale(180), }}>
+        </Animated.Image> 
 
         <Animated.Image
           source={require("@/assets/images/batchScanning/page-three.png")}
-          style={{ ...styles.page, bottom: pageTwoAnimation, height: 310 }}>
+          style={{ ...styles.page, bottom: pageTwoAnimation, height: HScale(320),width: WScale(190), }}>
         </Animated.Image>
-
+ 
         <Animated.Image
           source={require("@/assets/images/batchScanning/page-three.png")}
-          style={{ ...styles.page, bottom: pageThreeAnimation }}>
-        </Animated.Image>
+          style={{ ...styles.page, bottom: pageThreeAnimation, height: HScale(310),width: WScale(200), }}>
+        </Animated.Image> 
       </View>
     </View>
   );
@@ -57,27 +60,22 @@ export const BatchScanning = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    height: "100%",
-    paddingHorizontal: 24,
-    borderWidth: 1,
+    flex: 1,
+    paddingHorizontal: WScale(24),
     alignItems: "center"
   },
   animatedContainer: {
     flex: 1,
-    width: "100%",
-    height: "100%"
+    alignItems: "center"
   },
   image: {
-    objectFit: "scale-down",
-    height: 352,
-    width: "100%",
+    width: WScale(230),
+    height: IMAGE_HEIGHT,
+    objectFit: "contain",
     position: "absolute",
   },
   page: {
-    objectFit: "scale-down",
-    height: 310,
-    width: "100%",
+    objectFit: "contain",
     position: "absolute",
   },
 });

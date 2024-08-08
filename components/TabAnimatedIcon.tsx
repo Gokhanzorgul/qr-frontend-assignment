@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
+import { Image, View, ImageSourcePropType } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import Animated, {
   useAnimatedProps,
   useSharedValue,
   withTiming,
-  AnimateProps
 } from 'react-native-reanimated';
-import { Image, View } from 'react-native';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const radius = 45;
 
-export const TabAnimatedIcon = (props) => {
+type TabAnimatedIconPropType = {
+  isSelected: boolean;
+  icon: ImageSourcePropType;
+}
+
+export const TabAnimatedIcon = (props: TabAnimatedIconPropType) => {
   const { icon, isSelected } = props;
   const strokeOffset = useSharedValue(radius * Math.PI * 2);
 

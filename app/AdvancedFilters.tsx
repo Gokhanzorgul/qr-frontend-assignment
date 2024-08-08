@@ -1,14 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import Animated, { useSharedValue, withSpring, withDelay } from 'react-native-reanimated';
+
 import { i18n } from '@/locales/i18n';
 import { PageTitle } from '@/components/PageTitle';
 import { PageTag } from '@/components/PageTag';
 import { PageDescription } from '@/components/PageDescription';
 import { CustomButton } from '@/components/CustomButton';
-import Animated, { useSharedValue, withSpring, withDelay } from 'react-native-reanimated';
+import { HScale, WScale } from '@/utils/layout';
 
 const DELAY = 1500;
-const START_VALUE = -200;
+const IMAGE_HEIGHT = HScale(466);
+const START_VALUE = -IMAGE_HEIGHT;
 
 export const AdvancedFilters = () => {
   const bottom = useSharedValue<number>(START_VALUE);
@@ -16,7 +19,7 @@ export const AdvancedFilters = () => {
   const rightBarAnimation = useSharedValue<number>(0);
 
   useEffect(() => {
-    bottom.value = withDelay(DELAY / 2, withSpring(bottom.value + 350));
+    bottom.value = withDelay(DELAY / 2, withSpring(bottom.value + IMAGE_HEIGHT - HScale(80)));
     leftBarAnimation.value = withDelay(DELAY, withSpring(leftBarAnimation.value + 1));
     rightBarAnimation.value = withDelay(DELAY + 500, withSpring(rightBarAnimation.value + 1));
   }, [])
@@ -26,54 +29,48 @@ export const AdvancedFilters = () => {
       <PageTag text={i18n.t("pages.advancedFilters.tag")} />
       <PageTitle text={i18n.t("pages.advancedFilters.title")} />
       <PageDescription text={i18n.t("pages.advancedFilters.description")} />
-      <CustomButton style={{ marginTop: 40 }} />
+      <CustomButton style={{ marginTop: HScale(20) }} onPress={() => null} />
 
       <View style={styles.animatedContainer}>
         <Animated.Image
           source={require("@/assets/images/advancedFilters/phone.png")}
           style={{ ...styles.image, bottom }}>
         </Animated.Image>
-
-        <Animated.Image
-          source={require("@/assets/images/advancedFilters/advanced-filters-left-bar.png")}
-          style={{ ...styles.bar, left: 20, opacity: leftBarAnimation }}>
-        </Animated.Image>
-
-        <Animated.Image
-          source={require("@/assets/images/advancedFilters/advanced-filters-right-bar.png")}
-          style={{ ...styles.bar, right: 20, opacity: rightBarAnimation }}>
-        </Animated.Image>
-
       </View>
+
+      <Animated.Image
+        source={require("@/assets/images/advancedFilters/advanced-filters-right-bar.png")}
+        style={{ ...styles.bar, right: WScale(52), opacity: rightBarAnimation }}>
+      </Animated.Image>
+      <Animated.Image
+        source={require("@/assets/images/advancedFilters/advanced-filters-left-bar.png")}
+        style={{ ...styles.bar, opacity: leftBarAnimation, left: WScale(52), }}>
+      </Animated.Image>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    height: "100%",
-    paddingHorizontal: 24,
+    flex:1,
+    paddingHorizontal: WScale(24),
     alignItems: "center"
   },
   animatedContainer: {
     flex: 1,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "row"
+    alignItems: "center"
   },
   image: {
-    objectFit: "scale-down",
-    height: 352,
-    width: "100%",
+    width: WScale(230),
+    height: IMAGE_HEIGHT,
+    objectFit: "contain",
     position: "absolute",
   },
   bar: {
     objectFit: "scale-down",
-    height: 240,
-    maxWidth: 28.35,
-    width: "100%",
+    height: HScale(240),
+    maxWidth: WScale(28.35),
     position: "absolute",
+    bottom: HScale(0)
   },
 });

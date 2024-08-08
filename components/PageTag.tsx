@@ -1,14 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { i18n } from '../locales/i18n';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
+import Animated, { useSharedValue, withSpring, withDelay } from 'react-native-reanimated';
+import { PAGE_LODASH_DELAY } from '@/utils/global';
+import { HScale } from '@/utils/layout';
 
-export const PageTag = (props) => {
+type PageTagPropType = {
+  text?: string,
+}
+
+export const PageTag = (props: PageTagPropType) => {
   const opacity = useSharedValue<number>(0);
   const { text } = props;
 
   useEffect(() => {
-    opacity.value = withSpring(1);
+    opacity.value = withDelay(PAGE_LODASH_DELAY, withSpring(1));
   }, [])
 
   return (
@@ -18,9 +23,9 @@ export const PageTag = (props) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontWeight: 800,
+    fontWeight: "800",
     fontSize: 16,
-    lineHeight: 19,
+    lineHeight: HScale(19),
     textAlign: 'center',
     color: '#0381FF',
     textTransform: 'uppercase'

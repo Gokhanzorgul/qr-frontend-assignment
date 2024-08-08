@@ -1,12 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+
 import { DocumentScanner } from './DocumentScanner';
 import { SignStamp } from './SignStamp';
 import { BatchScanning } from './BatchScanning';
 import { AdvancedFilters } from './AdvancedFilters';
 import { ExportShare } from './ExportShare';
+import { GlobalContext } from '@/context/GlobalContext';
 
-export const Router = (props) => {
-  const { selectedPageIndex } = props;
+export const Router = () => {
+  const { selectedPageIndex } = useContext(GlobalContext);
+
   switch (selectedPageIndex) {
     case 0:
       return <DocumentScanner />

@@ -2,7 +2,6 @@ export default {
   global: {
     learnMore: 'Learn More',
   },
-  test: "%{name}!",
   pages: {
     documentScanner: {
       tag: 'Document Scanner',
